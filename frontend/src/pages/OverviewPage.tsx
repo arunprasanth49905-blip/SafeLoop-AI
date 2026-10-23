@@ -27,7 +27,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ systemStatus }) => {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <span className="brand-badge">Phase 1 Foundation</span>
+            <span className="brand-badge">Phase 2: Gemini Connected</span>
           </div>
         </div>
       </div>
@@ -88,7 +88,13 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ systemStatus }) => {
             </span>
             <StatusBadge
               status={agent?.configured ? 'healthy' : 'inactive'}
-              label={agent?.configured ? 'Key Configured' : 'Inactive (Phase 2)'}
+              label={
+                agent?.configured
+                  ? 'Active (Ready)'
+                  : health?.status === 'healthy'
+                  ? 'Provider Unconfigured'
+                  : 'Offline'
+              }
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.8125rem' }}>
@@ -98,16 +104,19 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ systemStatus }) => {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: 'var(--text-muted)' }}>Target Model</span>
-              <span style={{ fontFamily: 'var(--font-mono)' }}>{agent?.model || 'gemini-1.5-flash'}</span>
+              <span style={{ fontFamily: 'var(--font-mono)' }}>
+                {agent?.model || (health?.status === 'healthy' ? 'Awaiting Provider Setup' : 'Offline')}
+              </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: 'var(--text-muted)' }}>Activation Status</span>
               <span style={{ color: 'var(--text-secondary)' }}>
-                {agent?.status_message || 'Gemini integration has not yet been activated (Phase 2).'}
+                {agent?.status_message || (health?.status === 'healthy' ? 'Provider credentials required in backend/.env' : 'Backend offline')}
               </span>
             </div>
           </div>
         </div>
+
       </div>
 
       {/* System Metrics (Phase 1: Real Empty States / Em Dashes - Never Invent Fake Metrics) */}

@@ -90,22 +90,33 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ systemStatus }) => {
               </tr>
               <tr>
                 <td style={{ fontWeight: 500 }}>Configured Model</td>
-                <td style={{ fontFamily: 'var(--font-mono)' }}>{agent?.model || 'gemini-1.5-flash'}</td>
+                <td style={{ fontFamily: 'var(--font-mono)' }}>
+                  {agent?.model || (health?.status === 'healthy' ? 'Awaiting Configuration' : 'Not Connected')}
+                </td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 500 }}>Credentials Status</td>
                 <td>
                   <span style={{ color: agent?.configured ? 'var(--status-emerald)' : 'var(--text-muted)' }}>
-                    {agent?.configured ? 'Present in Backend Environment' : 'Not Configured (Phase 1 Default)'}
+                    {agent?.configured ? 'Configured (Active on Server)' : 'Not Configured in backend/.env'}
                   </span>
                 </td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 500 }}>Integration State</td>
                 <td>
-                  <span className="brand-badge">Phase 2 Scheduled</span>
+                  {agent?.configured ? (
+                    <span className="brand-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--status-emerald)' }}>
+                      Phase 2 Active
+                    </span>
+                  ) : (
+                    <span className="brand-badge">
+                      {health?.status === 'healthy' ? 'Phase 2 Ready (Awaiting Backend Config)' : 'Offline'}
+                    </span>
+                  )}
                 </td>
               </tr>
+
             </tbody>
           </table>
         </div>

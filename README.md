@@ -1,247 +1,268 @@
 # SafeLoop AI
 
-> **Safe Feedback-Driven Continuous Improvement of Agentic AI Systems Without Model Retraining**
+> **Feedback-Driven Closed-Loop Continuous Improvement of Agentic AI Systems Without Model Retraining**
 
-SafeLoop AI is an agentic AI engineering framework designed to enable continuous, self-improving performance through closed-loop human and automated feedback. Rather than relying on costly, slow, and non-deterministic model fine-tuning or weight retraining, SafeLoop AI indexes validated user critiques and operational corrections into a safe, persistent strategy memory layer with defensive regression gating.
+SafeLoop AI is an agentic AI engineering framework designed to enable continuous, self-improving agent performance through closed-loop human and automated feedback. Rather than relying on costly, slow, and non-deterministic model fine-tuning or weight retraining, SafeLoop AI indexes validated user critiques and operational corrections into a safe, persistent strategy memory layer with defensive regression gating and evidence-based continuous evaluation.
 
 ---
 
-## Current Status: Phase 1 Foundation
+## Architecture Overview
 
-**Phase 1** establishes the clean, decoupled architectural foundation of SafeLoop AI:
-- Robust **FastAPI backend** with environment-driven settings (`pydantic-settings`), real `/health` monitoring, and non-sensitive `/api/agent/status` reporting.
-- Modern **React 18 + TypeScript + Vite** frontend UI featuring a restrained, professional dark engineering design, active backend status telemetry, and interactive navigation across 7 system views.
-- **Strict credential isolation**: AI keys are never exposed in logs, frontend bundles, or client responses.
-- **Zero fake metrics / mock data**: All metrics display genuine empty states or em dashes until respective backend engines are activated in future phases.
+```text
+                                  +---------------------------------------+
+                                  |         User / AI Playground          |
+                                  +-------------------+-------------------+
+                                                      |
+                                                      v
+                                        +---------------------------+
+                                        |  Task Classification &    |
+                                        |    Workflow Optimization  | (Phase 7)
+                                        +-------------+-------------+
+                                                      |
+                                                      v
+                          +-------------------------------------------------------+
+                          |   Agent Execution Engine (Google Gemini Integration)  | (Phase 1-2)
+                          |   + Active Configuration & Behavioral Guidelines      | (Phase 5)
+                          |   + Retrieved Adaptive Learning Memories              | (Phase 6)
+                          +---------------------------+---------------------------+
+                                                      |
+                                                      v
+                                        +---------------------------+
+                                        |    Feedback Collection    | (Phase 3)
+                                        | (Helpful / Not / Correct) |
+                                        +-------------+-------------+
+                                                      |
+                                                      v
+                                        +---------------------------+
+                                        |  Quality Evaluation Engine| (Phase 4)
+                                        |  + Hard Safety Gate       |
+                                        +-------------+-------------+
+                                                      |
+                         +----------------------------+----------------------------+
+                         |                                                         |
+                         v                                                         v
+         +-------------------------------+                         +-------------------------------+
+         | Persistent Adaptive Memory    | (Phase 6)               | Controlled Improvement        | (Phase 5)
+         | + Provenance Audit Trail      |                         | + Proposal Generation         |
+         | + Scoped Relevance Retrieval  |                         | + Static Safety Verification  |
+         +-------------------------------+                         | + Regression Benchmark Gate   |
+                                                                   | + Human Review Approval       |
+                                                                   | + Atomic Version Activation   |
+                                                                   +---------------+---------------+
+                                                                                   |
+                                                                                   v
+                                        +---------------------------+  <-----------+
+                                        |   Continuous Monitoring   | (Phase 8)
+                                        |  + Real Telemetry Metrics |
+                                        |  + Baseline Comparisons  |
+                                        |  + Guardrails & Rollbacks |
+                                        +-------------+-------------+
+                                                      |
+                                                      v
+                                        +---------------------------+
+                                        |   Continuous Evaluation   | (Phase 9)
+                                        |  + Versioned Benchmarks   |
+                                        |  + Regression Analytics   |
+                                        |  + Failure Clustering     |
+                                        |  + Evidence Recommendations|
+                                        +---------------------------+
+```
+
+---
+
+## Key Features & Phase Breakdown
+
+- **Phase 1: Foundation & Design System**: Dark-themed AI engineering dashboard, strict TypeScript contracts, FastAPI service foundation, and zero-fake telemetry.
+- **Phase 2: Gemini Agent Integration**: Official Google GenAI SDK integration (`google-genai`), latency telemetry, and server-side secret isolation.
+- **Phase 3: Feedback Collection Engine**: Indexed feedback collection with binary votes, ratings, and structured corrective demonstrations.
+- **Phase 4: Feedback Quality Evaluation**: Deterministic multi-factor scoring (0–100), automated decisions (`approved`, `needs_review`, `rejected`), and prompt injection safety gates.
+- **Phase 5: Controlled Continuous Improvement**: Proposal generation, safety checks, benchmark regression suite, immutable configuration versioning (`v1.0.0` -> `v1.1.0`), and strict approval gates before activation.
+- **Phase 6: Persistent Adaptive Memory**: Provenance tracking, domain classification, privacy screening, and runtime memory retrieval without weight modification.
+- **Phase 7: Context-Aware Workflow Selection**: Intent classification across 7 task categories, specialized workflow execution, tool allowlisting, and fallback resilience.
+- **Phase 8: Continuous Monitoring & Safety Guardrails**: Real operational metrics, versioned baseline comparisons, deduplicated alert queue, and atomic rollback to known-good versions.
+- **Phase 9: Evaluation Analytics & Insights**: Repeatable benchmark runs on golden datasets (`ds_v1_standard`), empirical failure pattern clustering, and evidence-backed recommendations.
+- **Phase 10: Final Integration & Production Readiness**: Comprehensive E2E closed-loop integration, 124 passing backend tests, optimized frontend production bundle, and sanitized configuration.
 
 ---
 
 ## Technology Stack
 
+### Backend
+- **Framework**: FastAPI (Python 3.13+)
+- **Server**: Uvicorn (ASGI)
+- **AI SDK**: Official `google-genai` SDK
+- **Data Persistence**: SQLite with WAL mode (`PRAGMA journal_mode = WAL;`)
+- **Validation**: Pydantic v2 & Pydantic Settings
+- **Testing**: Pytest, AnyIO, HTTPX (124 automated tests)
+
 ### Frontend
 - **Framework**: React 18
-- **Build Tool**: Vite
 - **Language**: TypeScript (strict mode)
+- **Build Tool**: Vite
 - **Icons**: Lucide React
-- **Styling**: CSS Variables & responsive modern stylesheet (no external CSS framework bloat)
-
-### Backend
-- **Framework**: FastAPI
-- **Server**: Uvicorn
-- **Validation & Settings**: Pydantic v2 & Pydantic Settings
-- **Testing**: Pytest, AnyIO, HTTPX
-- **Compatibility**: Python 3.13+
+- **Architecture**: Single-page application with URL hash routing (`#overview`, `#improvement`, etc.) and Error Boundary containment
 
 ---
 
-## Directory Structure
+## Requirements & Environment Setup
 
-```text
-SafeLoop-AI/
-├── .gitignore
-├── README.md
-├── docs/
-│   ├── architecture.md
-│   └── phase-roadmap.md
-├── backend/
-│   ├── .env.example
-│   ├── requirements.txt
-│   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py
-│   │   ├── api/
-│   │   │   ├── __init__.py
-│   │   │   └── routes/
-│   │   │       ├── __init__.py
-│   │   │       ├── health.py
-│   │   │       └── agent.py
-│   │   ├── core/
-│   │   │   ├── __init__.py
-│   │   │   ├── config.py
-│   │   │   └── logging.py
-│   │   ├── models/
-│   │   │   ├── __init__.py
-│   │   │   └── schemas.py
-│   │   └── services/
-│   │       ├── __init__.py
-│   │       └── agent_service.py
-│   └── tests/
-│       ├── __init__.py
-│       ├── conftest.py
-│       ├── test_health.py
-│       └── test_agent.py
-└── frontend/
-    ├── .env.example
-    ├── index.html
-    ├── package.json
-    ├── tsconfig.json
-    ├── tsconfig.node.json
-    ├── vite.config.ts
-    ├── public/
-    │   └── safeloop-logo.svg
-    └── src/
-        ├── App.tsx
-        ├── main.tsx
-        ├── components/
-        │   ├── EmptyState.tsx
-        │   ├── Header.tsx
-        │   ├── MetricPlaceholder.tsx
-        │   ├── Sidebar.tsx
-        │   └── StatusBadge.tsx
-        ├── hooks/
-        │   └── useSystemStatus.ts
-        ├── layouts/
-        │   └── DashboardLayout.tsx
-        ├── pages/
-        │   ├── EvaluationPage.tsx
-        │   ├── FeedbackPage.tsx
-        │   ├── MemoryPage.tsx
-        │   ├── OverviewPage.tsx
-        │   ├── PlaygroundPage.tsx
-        │   ├── SafetyPage.tsx
-        │   └── SettingsPage.tsx
-        ├── services/
-        │   └── api.ts
-        ├── styles/
-        │   ├── global.css
-        │   └── theme.css
-        └── types/
-            └── index.ts
-```
+### Prerequisites
+- **Python**: 3.13+ installed
+- **Node.js**: 18.x or 20.x+ installed
+- **Operating System**: Windows 10/11, macOS, or Linux
 
----
+### 1. Backend Setup (Windows PowerShell)
 
-## Prerequisites
+```powershell
+# Navigate to backend directory
+cd D:\SafeLoop-AI\backend
 
-- **Python**: Version 3.13 or higher (`python --version`)
-- **Node.js**: Version 18+ or 20+ (`node --version`)
-- **Package Manager**: npm 9+ (`npm --version`)
-
----
-
-## Local Development Setup
-
-### 1. Backend Setup
-
-Open a Command Prompt or PowerShell terminal in the project root:
-
-```cmd
-cd backend
+# Create virtual environment (if not already created)
 python -m venv .venv
-.venv\Scripts\activate
-python -m pip install -r requirements.txt
-copy .env.example .env
-python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+
+# Activate virtual environment
+.\.venv\Scripts\Activate.ps1
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables
+Copy-Item .env.example .env
+# Edit .env to add your GEMINI_API_KEY from Google AI Studio
 ```
 
-> **Note**: If port `8000` is already in use by another service on your machine, specify a different port (e.g., `--port 8001`) and update `VITE_API_BASE_URL` in `frontend/.env` accordingly.
+### 2. Frontend Setup (Windows PowerShell)
 
-Verify the backend in your browser or with curl:
-- **Root info**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- **Health check**: [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
-- **Agent status**: [http://127.0.0.1:8000/api/agent/status](http://127.0.0.1:8000/api/agent/status)
-- **Interactive OpenAPI docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+```powershell
+# Navigate to frontend directory
+cd D:\SafeLoop-AI\frontend
 
-### 2. Frontend Setup
+# Install dependencies
+npm install
 
-Open a second Command Prompt or PowerShell terminal in the project root:
-
-```cmd
-cd frontend
-npm.cmd install
-copy .env.example .env
-npm.cmd run dev
-```
-
-Open your browser to:
-- **Frontend Dashboard**: [http://127.0.0.1:5173/](http://127.0.0.1:5173/)
-
----
-
-## API Endpoints
-
-### `GET /health`
-Verifies backend process operational readiness.
-- **Status Code**: `200 OK`
-- **Response**:
-```json
-{
-  "status": "healthy",
-  "service": "safeloop-backend",
-  "version": "0.1.0"
-}
-```
-
-### `GET /api/agent/status`
-Returns AI provider integration status without exposing credentials.
-- **Status Code**: `200 OK`
-- **Response** (Phase 1 default without Gemini key):
-```json
-{
-  "provider": "google-gemini",
-  "configured": false,
-  "model": "gemini-1.5-flash",
-  "status_message": "Gemini integration has not yet been activated (Phase 2)."
-}
+# Configure environment variables
+Copy-Item .env.example .env
+# Default VITE_API_BASE_URL is http://127.0.0.1:8001 (or http://127.0.0.1:8000)
 ```
 
 ---
 
-## Environment Configuration
+## Environment Variables
+
+All sensitive credentials remain strictly server-side. **Never commit `.env` files to Git.**
 
 ### Backend (`backend/.env`)
-| Variable | Default | Description |
+
+| Variable | Description | Example / Default |
 | :--- | :--- | :--- |
-| `APP_NAME` | `SafeLoop AI` | Name of the backend application |
-| `APP_VERSION` | `0.1.0` | Semantic version |
-| `ENVIRONMENT` | `development` | Deployment environment |
-| `DEBUG` | `true` | Enable debug logs |
-| `HOST` | `127.0.0.1` | Local bind host |
-| `PORT` | `8000` | Local bind port |
-| `ALLOWED_ORIGINS` | `["http://localhost:5173", ...]` | CORS allowed origins |
-| `GEMINI_API_KEY` | `""` | Optional in Phase 1 (never required to start) |
-| `GEMINI_MODEL` | `gemini-1.5-flash` | Configured model identifier |
+| `APP_NAME` | Service title | `"SafeLoop AI"` |
+| `APP_VERSION` | Application version | `"0.1.0"` |
+| `ENVIRONMENT` | Runtime mode | `"development"` / `"production"` |
+| `DEBUG` | Enable debug logs | `true` / `false` |
+| `HOST` | Backend bind host | `"127.0.0.1"` |
+| `PORT` | Backend port | `8001` (or `8000`) |
+| `ALLOWED_ORIGINS` | CORS origins JSON array | `["http://localhost:5173", "http://127.0.0.1:5173"]` |
+| `DATABASE_PATH` | SQLite database file | `backend/data/safeloop.db` |
+| `GEMINI_API_KEY` | Google AI Studio API key | `"your_gemini_api_key_here"` |
+| `GEMINI_MODEL` | Gemini model name | `"gemini-2.5-flash"` |
+| `MEMORY_RETRIEVAL_ENABLED` | Dynamic memory retrieval flag | `true` |
+| `MEMORY_MAX_RETRIEVAL_COUNT`| Max memories per chat request | `3` |
+| `MEMORY_MIN_RELEVANCE_SCORE`| Minimum relevance threshold | `0.25` |
 
 ### Frontend (`frontend/.env`)
-| Variable | Default | Description |
+
+| Variable | Description | Example / Default |
 | :--- | :--- | :--- |
-| `VITE_API_BASE_URL` | `http://127.0.0.1:8000` | URL of the backend API gateway |
+| `VITE_API_BASE_URL` | Base URL of FastAPI backend | `http://127.0.0.1:8001` |
+
+---
+
+## Starting the Application on Windows
+
+### 1. Launch Backend Server
+
+In a PowerShell terminal:
+```powershell
+cd D:\SafeLoop-AI\backend
+.\.venv\Scripts\Activate.ps1
+uvicorn app.main:app --host 127.0.0.1 --port 8001 --reload
+```
+The backend starts at `http://127.0.0.1:8001`.
+
+### 2. Launch Frontend Dev Server
+
+In a second PowerShell terminal:
+```powershell
+cd D:\SafeLoop-AI\frontend
+npm run dev
+```
+The frontend is available at `http://localhost:5173`.
 
 ---
 
 ## Running Automated Tests
 
-### Backend Tests (Pytest)
-```cmd
-cd backend
-.venv\Scripts\python -m pytest -v
+### Backend Tests (124 tests across 11 test suites)
+
+```powershell
+cd D:\SafeLoop-AI
+python -m pytest backend/tests -v
 ```
 
-Tests verify:
-1. `GET /health` returns HTTP 200 and matches the expected schema.
-2. `GET /api/agent/status` returns HTTP 200 with provider readiness.
-3. No secret API keys are ever leaked in response payloads or headers.
-4. App starts and runs cleanly even if Gemini key is omitted.
-5. Settings parsing handles irregular origins without crashing.
+### Frontend Typecheck & Production Build
 
-### Frontend Typecheck & Build
-```cmd
-cd frontend
-npm.cmd run typecheck
-npm.cmd run build
+```powershell
+cd D:\SafeLoop-AI\frontend
+
+# Run strict TypeScript check
+npm run typecheck
+
+# Run production Vite build
+npm run build
 ```
 
 ---
 
-## Phase 1 Limitations & Boundaries
+## Interactive API Documentation
 
-1. **No Real Gemini Calls**: Real LLM generation is reserved for **Phase 2**.
-2. **Disabled Send Button**: The Playground Send button is disabled with an explanatory banner so users are never misled by fake AI completions.
-3. **Empty Metric States**: Tasks, Feedback, and Benchmark metrics display `—` to reflect the honest state of the system.
-4. **Local Execution**: No external cloud services or databases are provisioned in Phase 1.
+FastAPI auto-generates interactive OpenAPI documentation:
+- **Swagger UI**: `http://127.0.0.1:8001/docs`
+- **ReDoc UI**: `http://127.0.0.1:8001/redoc`
+- **Root Service Metadata**: `http://127.0.0.1:8001/`
 
 ---
 
-## Future Phase Roadmap
+## 5-Minute Live Demonstration Script
 
-For comprehensive details on Phases 2 through 10, see [docs/phase-roadmap.md](docs/phase-roadmap.md) and [docs/architecture.md](docs/architecture.md).
+| Timing | View / Endpoint | Action & Talking Points |
+| :--- | :--- | :--- |
+| **0:00 - 0:45** | **AI Playground** (`#playground`) | **Agent Task Execution**: Enter a Python prompt: *"How do I sort a list in Python?"*. Execute and highlight telemetry badges (model, roundtrip latency in ms, task ID). Point out that the agent is governed by immutable versioned guidelines (`v1.0.0`). |
+| **0:45 - 1:30** | **Feedback Capture** (`#playground` / `#feedback`) | **Feedback & Rubric Scoring**: Click the feedback drawer on the response. Submit a **Correction**: *"Always specify that list.sort() sorts in place, while sorted() returns a new list."* Navigate to **Feedback** (`#feedback`), view the newly captured record, and demonstrate deterministic scoring and safety validation. |
+| **1:30 - 2:30** | **Continuous Improvement** (`#improvement`) | **Controlled Improvement Pipeline**: In **Continuous Improvement**, review the proposal generated from the feedback. Show that candidate instructions cannot activate directly (status: `draft`). Run the 5-point **Regression Benchmark**, execute human approval, and activate to bump version to `v1.1.0`. Show the verifiable audit log. |
+| **2:30 - 3:15** | **Learning Memory** (`#memory`) | **Adaptive Memory Persistence**: Open **Learning Memory**, show the approved memory candidate for `"Python List Sorting In-Place vs New"`. Demonstrate test retrieval with query *"How do I sort without modifying original?"* to show relevant memory extraction without fine-tuning. |
+| **3:15 - 4:00** | **Monitoring & Safety** (`#safety`) | **Safety Guardrails & Rollbacks**: Open **Monitoring & Safety**. Show real system telemetry (labeled sample count, regression pass rate, zero fake data). Review the baseline comparison against `v1.0.0` and explain how safety violations trigger critical alerts and atomic rollback to known-good versions. |
+| **4:00 - 5:00** | **Continuous Evaluation** (`#evaluation`) | **Empirical Evaluation & Recommendations**: Open **Evaluation**. Inspect the latest benchmark run against golden dataset `ds_v1_standard`. Show delta comparisons between versions, failure pattern clustering, and explain why SafeLoop AI rejects claims of improvement unless backed by statistically valid empirical evidence. |
+
+---
+
+## Production Deployment & Readiness Checklist
+
+### Deployment Architecture
+- **Reverse Proxy**: Nginx or Caddy terminating TLS, serving static frontend files from `frontend/dist`, and proxying `/api` and `/health` requests to `127.0.0.1:8001`.
+- **Application Server**: Uvicorn running under `systemd` or as a container process.
+- **Process Supervisor**: Restart-on-failure policy with structured log forwarding to stdout.
+
+### Pre-Deployment Checklist
+- [x] All 124 backend tests passing (`pytest backend/tests`).
+- [x] Zero TypeScript compilation errors (`tsc --noEmit`).
+- [x] Frontend production bundle built (`npm run build`).
+- [x] `backend/.env` and `frontend/.env` excluded from version control (`.gitignore`).
+- [x] SQLite database directory (`backend/data/`) excluded from version control.
+- [x] CORS `ALLOWED_ORIGINS` locked to trusted production domains.
+- [x] API key isolated server-side with no exposure in client bundles or API responses.
+- [x] Baseline configuration (`v1.0.0`) initialized and immutable.
+
+### Known Limitations & Operational Boundaries
+1. **SQLite Concurrency**: SQLite with WAL mode is optimal for single-node deployments. If horizontally scaling to multiple backend instances, configure an external PostgreSQL database.
+2. **Statistical Significance**: Evaluation comparisons require a minimum of 5 labeled test cases before concluding statistically significant improvement; smaller sample sizes are appropriately flagged as `insufficient_data` or `inconclusive`.
+3. **Model Dependence**: SafeLoop AI enforces strict behavioral instructions and adaptive memories without model weight retraining. Prompt instructions assume modern instruction-following LLMs (Gemini 2.5 Flash).

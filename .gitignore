@@ -68,7 +68,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# SafeLoop local data / caches
+# SafeLoop local data / caches / databases
 data/
 cache/
 scratch/
+*.db
+*.sqlite
+*.sqlite3

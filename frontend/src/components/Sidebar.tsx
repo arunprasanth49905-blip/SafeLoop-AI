@@ -6,7 +6,9 @@ import {
   BrainCircuit,
   ShieldCheck,
   BarChart3,
+  GitBranch,
   Settings,
+  Network,
 } from 'lucide-react';
 import { NavigationTab } from '../types';
 
@@ -25,9 +27,11 @@ const NAV_ITEMS: NavItemConfig[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'playground', label: 'AI Playground', icon: Bot },
   { id: 'feedback', label: 'Feedback', icon: MessageSquarePlus },
-  { id: 'memory', label: 'Learning Memory', icon: BrainCircuit },
-  { id: 'safety', label: 'Safety Monitor', icon: ShieldCheck },
   { id: 'evaluation', label: 'Evaluation', icon: BarChart3 },
+  { id: 'improvement', label: 'Continuous Improvement', icon: GitBranch },
+  { id: 'memory', label: 'Learning Memory', icon: BrainCircuit },
+  { id: 'workflows', label: 'Workflow Optimization', icon: Network },
+  { id: 'safety', label: 'Monitoring & Safety', icon: ShieldCheck },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
@@ -38,9 +42,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onSelectTab }) => {
         <img src="/safeloop-logo.svg" alt="SafeLoop AI Logo" className="logo-icon" />
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span className="brand-text">SafeLoop AI</span>
-          <span className="brand-badge">Phase 1</span>
+          <span className="brand-badge">Phase 10</span>
         </div>
       </div>
+
 
       <nav className="sidebar-nav" aria-label="Main Navigation">
         {NAV_ITEMS.map((item) => {

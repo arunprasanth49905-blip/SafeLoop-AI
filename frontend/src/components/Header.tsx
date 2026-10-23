@@ -14,14 +14,15 @@ export const Header: React.FC<HeaderProps> = ({ title, systemStatus }) => {
   let connectionStatus: 'connected' | 'disconnected' | 'pending' = 'pending';
   let badgeLabel = 'Checking...';
 
-  if (!isLoading) {
-    if (health && health.status === 'healthy') {
-      connectionStatus = 'connected';
-      badgeLabel = 'Backend Connected';
-    } else {
-      connectionStatus = 'disconnected';
-      badgeLabel = 'Backend Disconnected';
-    }
+  if (isLoading) {
+    connectionStatus = 'pending';
+    badgeLabel = 'Connecting...';
+  } else if (health && health.status === 'healthy') {
+    connectionStatus = 'connected';
+    badgeLabel = 'Backend Connected';
+  } else {
+    connectionStatus = 'disconnected';
+    badgeLabel = 'Backend Disconnected';
   }
 
   return (
@@ -46,13 +47,14 @@ export const Header: React.FC<HeaderProps> = ({ title, systemStatus }) => {
           className="btn btn-secondary"
           onClick={() => checkStatus()}
           disabled={isLoading}
-          title="Refresh connection status"
+          title="Retry or refresh backend connection status"
           style={{ padding: '0.4rem 0.65rem' }}
         >
           <RefreshCw size={14} className={isLoading ? 'animate-spin' : ''} />
-          <span>Refresh</span>
+          <span>{isLoading ? 'Checking...' : 'Refresh'}</span>
         </button>
       </div>
     </header>
   );
 };
+

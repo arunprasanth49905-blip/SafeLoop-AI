@@ -63,9 +63,10 @@ flowchart TD
   - `app/models/`: Pydantic request and response schemas enforcing data contracts.
   - `app/services/`: Reusable business logic layers (`agent_service.py`).
 
-### 2.3 AI Agent Provider (`google-gemini`) *(Scheduled for Phase 2)*
-- **Integration**: Google Gemini 1.5 Flash / Pro via official Google Generative AI SDK.
-- **Role**: Executes tasks, multi-step tool calls, and code generation.
+### 2.3 AI Agent Provider (`google-genai`) *(Implemented in Phase 2)*
+- **Integration**: Google Gemini 1.5/2.0 models via official `google-genai` Python SDK (`genai.Client`).
+- **Endpoint**: `POST /api/agent/chat` orchestrates prompt execution, system instructions, latency telemetry, and task tracking.
+- **Role**: Executes tasks, multi-step tool calls, and text generation.
 - **Context Injection**: During inference, the agent dynamically receives retrieved strategy instructions from the memory store alongside system prompts.
 
 ### 2.4 Feedback Collection Engine *(Scheduled for Phase 3)*

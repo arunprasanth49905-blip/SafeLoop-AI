@@ -14,9 +14,11 @@ const TAB_TITLES: Record<NavigationTab, string> = {
   overview: 'System Overview',
   playground: 'AI Agent Playground',
   feedback: 'Human & Automated Feedback',
-  memory: 'Persistent Learning Memory',
-  safety: 'Safety & Regression Monitor',
   evaluation: 'Continuous Evaluation',
+  improvement: 'Controlled Continuous Improvement',
+  memory: 'Persistent Learning Memory',
+  workflows: 'Workflow & Tool Optimization',
+  safety: 'Safety & Regression Monitor',
   settings: 'System Configuration',
 };
 
