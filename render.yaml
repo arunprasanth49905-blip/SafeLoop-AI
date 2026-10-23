@@ -1,0 +1,39 @@
+# Render Blueprint for SafeLoop AI Backend Service
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: safeloop-backend
+    runtime: python
+    rootDir: backend
+    plan: starter
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: safeloop-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: DATABASE_PATH
+        value: /data/safeloop.db
+      - key: ALLOWED_ORIGINS
+        # Update with your exact Vercel frontend domain after deployment
+        value: "https://your-safeloop-app.vercel.app,http://localhost:5173"
+      - key: GEMINI_API_KEY
+        sync: false # Set securely in the Render dashboard
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: MEMORY_RETRIEVAL_ENABLED
+        value: "true"
+      - key: MEMORY_MAX_RETRIEVAL_COUNT
+        value: "3"
+      - key: MEMORY_MIN_RELEVANCE_SCORE
+        value: "0.25"
